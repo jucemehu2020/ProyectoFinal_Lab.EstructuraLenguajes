@@ -31,7 +31,7 @@ public class Armada {
         enemigo = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 10; j++) {
-                enemigo.add(new Enemigo(ENEMIGOS_X + 32 * j, ENEMIGOS_Y + 32 * i));
+                enemigo.add(new Enemigo(ALIEN_X + 32 * j, ALIEN_Y + 32 * i));
             }
         }
         numeroDeEnemigos = 50;

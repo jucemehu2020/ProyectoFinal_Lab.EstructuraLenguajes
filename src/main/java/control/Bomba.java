@@ -16,7 +16,7 @@ public class Bomba extends Movimiento {
     //Metodo que permite el movimiento de las bombas
     @Override
     public void mover() {
-        if(y>GROUND-ALTO_BOMBA)
+        if(y>POSICION_SUELO-ALTO_BOMBA)
             this.muerto();
         super.mover();
     }

@@ -10,6 +10,7 @@ public class PosicionBloques {
 
     private List<Bloques> squares;
 
+    //Contructor de la posicion de los bloques
     public PosicionBloques(int x, int y) {
         squares=new ArrayList<>();
         for(int i=0; i<3; i++) {
@@ -28,7 +29,8 @@ public class PosicionBloques {
         }
     }
 
-    public void draw(Graphics g) {
+    //Metodo que llama al dibujar bloques
+    public void dibujarB(Graphics g) {
         for(Bloques square : squares) {
             if(square.visible) square.dibujarBloques(g);
         }

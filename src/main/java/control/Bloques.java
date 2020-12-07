@@ -13,6 +13,7 @@ class Bloques extends Rectangle  {
         setVisible(true);
     }
 
+    //Metodo que verifica si esta visible el bloque
     void setVisible(boolean visible) {
         this.visible = visible;
     }

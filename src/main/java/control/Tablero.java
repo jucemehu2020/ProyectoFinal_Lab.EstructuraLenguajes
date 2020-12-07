@@ -71,24 +71,19 @@ public class Tablero extends JPanel implements Runnable {
             }
             beforeTime = System.currentTimeMillis();
         }
-        gameOver();
+        finJuego();
     }
 
     @Override
-    public void paintComponent(Graphics g
-    ) {
-
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
         Font font = new Font("Helvetica", Font.PLAIN, 15);
         g.setColor(Color.WHITE);
         g.setFont(font);
-
         g.drawString("Vidas: " + lives.toString(), 20, 30);
         g.drawString("Enemigos restantes: " + enemyWave.getNumeroEnemigo().toString(), 20, 50);
-
         g.setColor(Color.GREEN);
-        g.drawLine(0, GROUND, ANCHO_FRAME, GROUND);
+        g.drawLine(0, POSICION_SUELO, ANCHO_FRAME, POSICION_SUELO);
 
         player.draw(g, this);
         if (player.getM().isVisible()) {
@@ -98,7 +93,7 @@ public class Tablero extends JPanel implements Runnable {
         enemyWave.dibujarArmada(g, this);
 
         for (PosicionBloques guard : guards) {
-            guard.draw(g);
+            guard.dibujarB(g);
         }
     }
 
@@ -107,28 +102,25 @@ public class Tablero extends JPanel implements Runnable {
             inGame = false;
             message = "Ganaste!! Felicitaciones!!";
         }
-
         if (player.isDying()) {
             lives--;
             if (lives != 0) {
                 player.revive();
             } else {
                 inGame = false;
-                message = "Fin del juego!";
+                message = "Fin del juego!.. Te quedaste sin vidas";
             }
         }
-
         if (enemyWave.tocoSuelo()) {
             inGame = false;
-            message = "Game Over!";
+            message = "Perdiste!..Los aliens tocaron el suelo";
         }
-
         player.mover();
         player.missleMove();
         accionesEnemigos();
-        verificaImpacto();
-        collisionBombPlayer();
-        collisionWithGuards();
+        verificaImpactoAlien();
+        verificaImpactoNave();
+        verificaImpactoBloque();
     }
 
     //Metodo que llama a todo lo que deben hacer los enemigos (Disparar,acelerarlos)
@@ -141,7 +133,7 @@ public class Tablero extends JPanel implements Runnable {
     }
 
     //Metodo que elimina a los enemigos si les impacta la bala de la nave
-    private void verificaImpacto() {
+    private void verificaImpactoAlien() {
         if (player.getM().isVisible()) {
             for (Enemigo enemy : enemyWave.getEnemigos()) {
                 if (enemy.isVisible() && player.getM().collisionWith(enemy)) {
@@ -153,7 +145,8 @@ public class Tablero extends JPanel implements Runnable {
         }
     }
 
-    private void collisionBombPlayer() {
+    //Metodo que quita vidas al jugador si la nave ha sido impactada
+    private void verificaImpactoNave() {
         for (Enemigo enemy : enemyWave.getEnemigos()) {
             if (enemy.getBomb().isVisible() && enemy.getBomb().collisionWith(player)) {
                 player.explosion();
@@ -162,7 +155,8 @@ public class Tablero extends JPanel implements Runnable {
         }
     }
 
-    private void collisionWithGuards() {
+    //Metodo que elimina pedazos del bloque si ha sido impactado
+    private void verificaImpactoBloque() {
         for (PosicionBloques guard : guards) {
             guard.collisionWith(player.getM());
             for (Enemigo enemy : enemyWave.getEnemigos()) {
@@ -171,13 +165,12 @@ public class Tablero extends JPanel implements Runnable {
         }
     }
 
-    private void gameOver() {
+    //Termina el juego 
+    private void finJuego() {
         Graphics g = this.getGraphics();
         super.paintComponent(g);
-
         Font font = new Font("Helvetica", Font.BOLD, 18);
         FontMetrics ft = this.getFontMetrics(font);
-
         g.setColor(Color.WHITE);
         g.setFont(font);
         g.drawString(message, (ANCHO_FRAME - ft.stringWidth(message)) / 2, ALTO_FRAME / 2);

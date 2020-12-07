@@ -10,8 +10,8 @@ public class Nave extends Movimiento {
     public Nave (int x, int y) {
         super(x, y);
         loadImage("player.png");
-        ancho=ANCHO_JUGADOR;
-        alto=ALTO_JUGADOR;
+        ancho=ANCHO_NAVE;
+        alto=ALTO_NAVE;
         m = new Proyectil(0, 0);
         m.muerto();
     }
@@ -44,7 +44,7 @@ public class Nave extends Movimiento {
         if (key == KeyEvent.VK_SPACE) {
             if(!m.visible) {
                 m.visible=true;
-                m.x=this.x + ANCHO_JUGADOR/2;
+                m.x=this.x + ANCHO_NAVE/2;
                 m.y=this.y;
             }
         }
@@ -63,8 +63,8 @@ public class Nave extends Movimiento {
 
     @Override
     public void mover() {
-        if(x>ANCHO_FRAME-ANCHO_JUGADOR)
-            x=ANCHO_FRAME-ANCHO_JUGADOR;
+        if(x>ANCHO_FRAME-ANCHO_NAVE)
+            x=ANCHO_FRAME-ANCHO_NAVE;
         else if(x<0)
             x=0;
         else

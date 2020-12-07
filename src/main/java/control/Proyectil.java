@@ -14,6 +14,7 @@ public class Proyectil extends Movimiento {
         dy=-VELOCIDAD_PROYECTIL;
     }
 
+    //Permite el movimiento del proyectil
     @Override
     public void mover() {
         if(y<=0)
