@@ -6,7 +6,7 @@ public interface Globales {
     //Tamaño de la pantalla
     public static final int ALTO_FRAME=486;
     public static final int ANCHO_FRAME=650;
-    public static final int NAVE_VELOCIDAD=10;
+    public static final int NAVE_VELOCIDAD=4;
     //Tamaño de la nave
     public static final int ANCHO_NAVE=32;
     public static final int ALTO_NAVE=32;
@@ -15,7 +15,7 @@ public interface Globales {
     public static final int ANCHO_PROYECTIL=2;
     public static final int ALTO_PROYECTIL=8;
     //Bomba lo dispara la armada
-    public static final int VELOCIDAD_BOMBA=3;
+    public static final int VELOCIDAD_BOMBA=1;
     public static final int ANCHO_BOMBA=4;
     public static final int ALTO_BOMBA=12;
     //Tamaño de los aliens

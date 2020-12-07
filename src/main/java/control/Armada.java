@@ -7,13 +7,13 @@ import static control.Globales.*;
 
 public class Armada {
 
-    private List<Enemigo> enemigo;
+    private List<Enemigo> enemigos;
     private Integer numeroDeEnemigos;
-    private int velocidadEnemigo;
+    private int velocidadEnemigos;
 
     //Obtiene enemigos iniciales
     public List<Enemigo> getEnemigos() {
-        return enemigo;
+        return enemigos;
     }
 
     //Obtiene el numero de enemigos actuales
@@ -28,32 +28,32 @@ public class Armada {
 
     //Metodo encargado de llenar la lista de enemigos 
     public Armada() {
-        enemigo = new ArrayList<>();
+        enemigos = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 10; j++) {
-                enemigo.add(new Enemigo(ALIEN_X + 32 * j, ALIEN_Y + 32 * i));
+                enemigos.add(new Enemigo(ALIEN_X + 32 * j, ALIEN_Y + 32 * i));
             }
         }
         numeroDeEnemigos = 50;
-        velocidadEnemigo = 1;
+        velocidadEnemigos = 1;
     }
 
     //Metodo para dibujar la armada en la 
     public void dibujarArmada(Graphics g, Tablero board) {
-        for (Enemigo enemy : enemigo) {
-            if (enemy.visible) {
-                enemy.draw(g, board);
+        for (Enemigo enemigo : enemigos) {
+            if (enemigo.visible) {
+                enemigo.draw(g, board);
             }
-            if (enemy.bomba.visible) {
-                enemy.bomba.draw(g, board);
+            if (enemigo.bomba.visible) {
+                enemigo.bomba.draw(g, board);
             }
         }
     }
 
     //Metodo que pregunta si toco el suelo cada vez que baja 
     public boolean tocoSuelo() {
-        for (Enemigo enemy : enemigo) {
-            if (enemy.visible && enemy.y + enemy.alto > GUARD_POSY) {
+        for (Enemigo enemigo : enemigos) {
+            if (enemigo.visible && enemigo.y + enemigo.alto > GUARD_POSY) {
                 return true;
             }
         }
@@ -62,51 +62,52 @@ public class Armada {
 
     //Metodo que valida que aliens estan muertos
     public void fixStatus() {
-        for (Enemigo enemy : enemigo) {
-            if (enemy.dying) {
-                enemy.setAlmostDied(true);
-                enemy.setDying(false);
-            } else if (enemy.almostDied) {
-                enemy.muerto();
-                enemy.setAlmostDied(false);
-            } else if (enemy.visible) {
-                enemy.mover();
+        for (Enemigo enemigo : enemigos) {
+            if (enemigo.dying) {
+                enemigo.setAlmostDied(true);
+                enemigo.setDying(false);
+            } else if (enemigo.almostDied) {
+                enemigo.muerto();
+                enemigo.setAlmostDied(false);
+            } else if (enemigo.visible) {
+                enemigo.mover();
             }
         }
     }
 
-    public void bombMove() {
-        for (Enemigo enemy : enemigo) {
-            if (enemy.bomba.visible) {
-                enemy.bomba.mover();
+    //Movimiento de la bomba(Hacia abajo)
+    public void movimientoBomba() {
+        for (Enemigo enemigo : enemigos) {
+            if (enemigo.bomba.visible) {
+                enemigo.bomba.mover();
             }
         }
     }
 
     //Metodo del disparo de los enemigos
     public void disparo() {
-        for (Enemigo enemy : enemigo) {
-            enemy.tratarDisparar();
+        for (Enemigo enemigo : enemigos) {
+            enemigo.tratarDisparar();
         }
     }
 
     //Metodo que acelera a los enemigos mientras menos van quedando
     public void acelerarEnemigos() {
-        boolean b = false;
-        if (numeroDeEnemigos == 16) {
-            velocidadEnemigo = 1;
-            b = true;
+        boolean bandera = false;
+        if (numeroDeEnemigos == 30) {
+            velocidadEnemigos = 1;
+            bandera = true;
         }
-        if (numeroDeEnemigos == 8) {
-            velocidadEnemigo = 2;
-            b = true;
+        if (numeroDeEnemigos == 15) {
+            velocidadEnemigos = 2;
+            bandera = true;
         }
-        if (b) {
-            for (Enemigo enemy : enemigo) {
-                if (enemy.dx > 0) {
-                    enemy.dx = velocidadEnemigo;
+        if (bandera) {
+            for (Enemigo enemigo : enemigos) {
+                if (enemigo.dx > 0) {
+                    enemigo.dx = velocidadEnemigos;
                 } else {
-                    enemy.dx = -velocidadEnemigo;
+                    enemigo.dx = -velocidadEnemigos;
                 }
             }
         }
@@ -114,19 +115,18 @@ public class Armada {
 
     //Metodo que verifica si la armada toco la pared, si es asi los devuelve y los baja
     public void tocoPared() {
-        for (Enemigo enemy : enemigo) {
-            if (enemy.x > ANCHO_FRAME - ANCHO_ALIEN) {
-                for (Enemigo enemyReversed : enemigo) {
-                    enemyReversed.dx = -velocidadEnemigo;
-                    enemyReversed.y += 15;
+        for (Enemigo enemigo : enemigos) {
+            if (enemigo.x > ANCHO_FRAME - ANCHO_ALIEN) {
+                for (Enemigo reversaEnemigos : enemigos) {
+                    reversaEnemigos.dx = -velocidadEnemigos;
+                    reversaEnemigos.y += 15;
                 }
                 return;
             }
-
-            if (enemy.x < 0) {
-                for (Enemigo enemyReversed : enemigo) {
-                    enemyReversed.dx = velocidadEnemigo;
-                    enemyReversed.y += 15;
+            if (enemigo.x < 0) {
+                for (Enemigo reversaEnemigos : enemigos) {
+                    reversaEnemigos.dx = velocidadEnemigos;
+                    reversaEnemigos.y += 15;
                 }
                 return;
             }

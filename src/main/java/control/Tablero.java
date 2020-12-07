@@ -113,7 +113,7 @@ public class Tablero extends JPanel implements Runnable {
         }
         if (enemyWave.tocoSuelo()) {
             inGame = false;
-            message = "Perdiste!..Los aliens tocaron el suelo";
+            message = "Perdiste!..Los aliens tocaron el limite";
         }
         player.mover();
         player.missleMove();
@@ -126,7 +126,7 @@ public class Tablero extends JPanel implements Runnable {
     //Metodo que llama a todo lo que deben hacer los enemigos (Disparar,acelerarlos)
     private void accionesEnemigos() {
         enemyWave.fixStatus();
-        enemyWave.bombMove();
+        enemyWave.movimientoBomba();
         enemyWave.disparo();
         enemyWave.acelerarEnemigos();
         enemyWave.tocoPared();
