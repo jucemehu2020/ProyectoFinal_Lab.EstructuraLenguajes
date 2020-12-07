@@ -13,7 +13,7 @@ public class Nave extends Movimiento {
         ancho=ANCHO_JUGADOR;
         alto=ALTO_JUGADOR;
         m = new Proyectil(0, 0);
-        m.die();
+        m.muerto();
     }
 
     public Proyectil getM() {

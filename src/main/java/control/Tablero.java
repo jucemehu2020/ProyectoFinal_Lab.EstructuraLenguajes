@@ -125,27 +125,29 @@ public class Tablero extends JPanel implements Runnable {
 
         player.mover();
         player.missleMove();
-        enemyWaveMove();
-        collisionMissileEnemies();
+        accionesEnemigos();
+        verificaImpacto();
         collisionBombPlayer();
         collisionWithGuards();
     }
 
-    private void enemyWaveMove() {
+    //Metodo que llama a todo lo que deben hacer los enemigos (Disparar,acelerarlos)
+    private void accionesEnemigos() {
         enemyWave.fixStatus();
         enemyWave.bombMove();
         enemyWave.disparo();
-        enemyWave.accelerateIfNeeded();
-        enemyWave.turnAroundIfHitTheWall();
+        enemyWave.acelerarEnemigos();
+        enemyWave.tocoPared();
     }
 
-    private void collisionMissileEnemies() {
+    //Metodo que elimina a los enemigos si les impacta la bala de la nave
+    private void verificaImpacto() {
         if (player.getM().isVisible()) {
             for (Enemigo enemy : enemyWave.getEnemigos()) {
                 if (enemy.isVisible() && player.getM().collisionWith(enemy)) {
                     enemy.explosion();
                     enemyWave.disminuirNumeroEnemigos();
-                    player.getM().die();
+                    player.getM().muerto();
                 }
             }
         }
@@ -155,20 +157,20 @@ public class Tablero extends JPanel implements Runnable {
         for (Enemigo enemy : enemyWave.getEnemigos()) {
             if (enemy.getBomb().isVisible() && enemy.getBomb().collisionWith(player)) {
                 player.explosion();
-                enemy.getBomb().die();
+                enemy.getBomb().muerto();
             }
         }
     }
 
     private void collisionWithGuards() {
-        for(PosicionBloques guard : guards) {
+        for (PosicionBloques guard : guards) {
             guard.collisionWith(player.getM());
             for (Enemigo enemy : enemyWave.getEnemigos()) {
-               guard.collisionWith(enemy.getBomb());
+                guard.collisionWith(enemy.getBomb());
             }
         }
     }
-    
+
     private void gameOver() {
         Graphics g = this.getGraphics();
         super.paintComponent(g);

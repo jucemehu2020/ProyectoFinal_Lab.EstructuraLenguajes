@@ -23,7 +23,7 @@ public class PosicionBloques {
         for(Bloques square : squares) {
             if(square.visible && square.intersects(obj.getBoundary())) {
                 square.setVisible(false);
-                obj.die();
+                obj.muerto();
             }
         }
     }

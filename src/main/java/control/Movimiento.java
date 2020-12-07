@@ -44,7 +44,8 @@ public class Movimiento {
         g.drawImage(image, x, y, ancho, alto, board);
     }
 
-    public void die() {
+    //Verifica si debe eliminar si ha sido impactado
+    public void muerto() {
         visible=false;
     }
 

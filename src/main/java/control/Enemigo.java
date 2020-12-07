@@ -32,7 +32,7 @@ public class Enemigo extends Movimiento {
         dx = 1;
         almostDied = false;
         bomba = new Bomba(0, 0);
-        bomba.die();
+        bomba.muerto();
     }
 
     //Metodo para disparar

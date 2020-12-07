@@ -4,18 +4,20 @@ import static control.Globales.*;
 
 public class Bomba extends Movimiento {
 
+    //Constructor de la bomba 
     Bomba(int x, int y) {
         super(x, y);
         loadImage("bomb.png");
-        ancho=BOMB_WIDTH;
-        alto=BOMB_HEIGHT;
-        dy=BOMB_SPEED;
+        ancho=ANCHO_BOMBA;
+        alto=ALTO_BOMBA;
+        dy=VELOCIDAD_BOMBA;
     }
 
+    //Metodo que permite el movimiento de las bombas
     @Override
     public void mover() {
-        if(y>GROUND-BOMB_HEIGHT)
-            this.die();
+        if(y>GROUND-ALTO_BOMBA)
+            this.muerto();
         super.mover();
     }
 }
