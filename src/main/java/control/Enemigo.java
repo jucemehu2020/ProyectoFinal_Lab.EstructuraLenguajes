@@ -7,7 +7,7 @@ import static control.Globales.ANCHO_ALIEN;
 public class Enemigo extends Movimiento {
 
     Bomba bomba;
-    boolean almostDied;     //for proper projection of explosion
+    boolean muriendo;     
     private Random rand;
 
     public Bomba getBomb() {
@@ -19,18 +19,18 @@ public class Enemigo extends Movimiento {
         super(x, y);
         rand = new Random();
         if (x >= 0 && y == 30) {
-            loadImage("enemy2.png");
+            cargarImagen("enemy2.png");
         }
         if (x >= 0 && y >= 62) {
-            loadImage("enemy3.png");
+            cargarImagen("enemy3.png");
         }
         if (x >= 0 && y > 94) {
-            loadImage("enemy.png");
+            cargarImagen("enemy.png");
         }
         ancho = ANCHO_ALIEN;
         alto = ALTO_ALIEN;
         dx = 1;
-        almostDied = false;
+        muriendo = false;
         bomba = new Bomba(0, 0);
         bomba.muerto();
     }
@@ -45,9 +45,9 @@ public class Enemigo extends Movimiento {
         }
     }
 
-    //
-    void setAlmostDied(boolean almostDied) {
-        this.almostDied = almostDied;
+    // cambia el estado del atributo muriendo, que cada enemigo posee, al recibido como argumento.
+    void setMuriendo(boolean muriendo) {
+        this.muriendo = muriendo;
     }
 
     //Llama a mover para generar el movimiento de los enemigos

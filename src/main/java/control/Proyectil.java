@@ -8,7 +8,7 @@ public class Proyectil extends Movimiento {
 
     Proyectil(int x, int y) {
         super(x, y);
-        loadImage("missile.png");
+        cargarImagen("missile.png");
         ancho=ANCHO_PROYECTIL;
         alto=ALTO_PROYECTIL;
         dy=-VELOCIDAD_PROYECTIL;

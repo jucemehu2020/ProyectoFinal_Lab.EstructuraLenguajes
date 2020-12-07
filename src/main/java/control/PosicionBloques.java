@@ -20,9 +20,9 @@ public class PosicionBloques {
         }
     }
 
-    public void collisionWith(Movimiento obj) {
+    public void colisionar(Movimiento obj) {
         for(Bloques square : squares) {
-            if(square.visible && square.intersects(obj.getBoundary())) {
+            if(square.visible && square.intersects(obj.getLimite())) {
                 square.setVisible(false);
                 obj.muerto();
             }

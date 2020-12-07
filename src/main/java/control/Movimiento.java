@@ -12,39 +12,39 @@ public class Movimiento {
     int dy;     //velocity OY
     int ancho;
     int alto;
-    boolean dying;
+    boolean impacto;
     boolean visible;
 
     Movimiento(int x, int y) {
         this.x=x;
         this.y=y;
         visible=true;
-        dying=false;
+        impacto=false;
     }
 
-    void loadImage(String imageName) {
+    void cargarImagen(String imageName) {
         ImageIcon ii = new ImageIcon(imageName);
         image = ii.getImage();
     }
 
     public void explosion() {
-        loadImage("explosion.png");
-        setDying(true);
+        cargarImagen("explosion.png");
+        setImpacto(true);
     }
 
-    public Rectangle getBoundary() {
+    public Rectangle getLimite() {
         return new Rectangle(x, y, ancho, alto);
     }
 
-    public boolean collisionWith(Movimiento o) {
-        return this.getBoundary().intersects(o.getBoundary());
+    public boolean colisionar(Movimiento o) {
+        return this.getLimite().intersects(o.getLimite());
     }
 
-    public void draw(Graphics g, Tablero board) {
+    public void dibujar(Graphics g, Tablero board) {
         g.drawImage(image, x, y, ancho, alto, board);
     }
 
-    //Verifica si debe eliminar si ha sido impactado
+    //Verifica si debe eliminar si ha sido impacto
     public void muerto() {
         visible=false;
     }
@@ -53,12 +53,12 @@ public class Movimiento {
         return visible;
     }
 
-    void setDying(boolean b) {
-        dying=b;
+    void setImpacto(boolean b) {
+        impacto=b;
     }
 
     public boolean isDying() {
-        return dying;
+        return impacto;
     }
 
     public void mover() {

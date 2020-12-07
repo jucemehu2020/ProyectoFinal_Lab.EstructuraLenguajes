@@ -10,12 +10,14 @@ public class Armada {
     private List<Enemigo> enemigos;
     private Integer numeroDeEnemigos;
     private int velocidadEnemigos;
-
+    private int puntaje=0;
     //Obtiene enemigos iniciales
     public List<Enemigo> getEnemigos() {
         return enemigos;
     }
-
+    public int getPuntaje(){
+        return puntaje;
+    }
     //Obtiene el numero de enemigos actuales
     public Integer getNumeroEnemigo() {
         return numeroDeEnemigos;
@@ -42,10 +44,10 @@ public class Armada {
     public void dibujarArmada(Graphics g, Tablero board) {
         for (Enemigo enemigo : enemigos) {
             if (enemigo.visible) {
-                enemigo.draw(g, board);
+                enemigo.dibujar(g, board);
             }
             if (enemigo.bomba.visible) {
-                enemigo.bomba.draw(g, board);
+                enemigo.bomba.dibujar(g, board);
             }
         }
     }
@@ -53,22 +55,23 @@ public class Armada {
     //Metodo que pregunta si toco el suelo cada vez que baja 
     public boolean tocoSuelo() {
         for (Enemigo enemigo : enemigos) {
-            if (enemigo.visible && enemigo.y + enemigo.alto > GUARD_POSY) {
+            if (enemigo.visible && enemigo.y + enemigo.alto > BLOQUES_POSY) {
                 return true;
             }
         }
         return false;
     }
 
-    //Metodo que valida que aliens estan muertos
-    public void fixStatus() {
+    //Metodo que valida que los enemigos estan muertos
+    public void verificarVidaEnemigos() {
         for (Enemigo enemigo : enemigos) {
-            if (enemigo.dying) {
-                enemigo.setAlmostDied(true);
-                enemigo.setDying(false);
-            } else if (enemigo.almostDied) {
+            if (enemigo.impacto) {
+                enemigo.setMuriendo(true);
+                enemigo.setImpacto(false);
+            } else if (enemigo.muriendo) {
                 enemigo.muerto();
-                enemigo.setAlmostDied(false);
+                puntaje += 10;
+                enemigo.setMuriendo(false);
             } else if (enemigo.visible) {
                 enemigo.mover();
             }

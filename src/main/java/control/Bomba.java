@@ -7,7 +7,7 @@ public class Bomba extends Movimiento {
     //Constructor de la bomba 
     Bomba(int x, int y) {
         super(x, y);
-        loadImage("bomb.png");
+        cargarImagen("bomb.png");
         ancho=ANCHO_BOMBA;
         alto=ALTO_BOMBA;
         dy=VELOCIDAD_BOMBA;

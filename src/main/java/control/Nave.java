@@ -9,7 +9,7 @@ public class Nave extends Movimiento {
 
     public Nave (int x, int y) {
         super(x, y);
-        loadImage("player.png");
+        cargarImagen("player.png");
         ancho=ANCHO_NAVE;
         alto=ALTO_NAVE;
         m = new Proyectil(0, 0);
@@ -21,12 +21,13 @@ public class Nave extends Movimiento {
     }
 
     public void revive() {
-        loadImage("player.png");
-        setDying(false);
+        cargarImagen("player.png");
+        setImpacto(false);
         x=ANCHO_FRAME/2;
     }
-
-    public void missleMove() {
+    
+    //Movimiento del misil
+    public void movMisil() {
         if(m.isVisible()) {
             m.mover();
         }

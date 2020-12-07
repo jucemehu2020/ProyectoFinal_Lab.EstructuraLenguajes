@@ -13,25 +13,25 @@ import static control.Globales.*;
 
 public class Tablero extends JPanel implements Runnable {
 
-    private Nave player;
-    private Armada enemyWave;
-    private List<PosicionBloques> guards;
+    private Nave jugador;
+    private Armada oleadaEnemigos;
+    private List<PosicionBloques> bloques;
 
-    private boolean inGame;
-    private Integer lives;
-    private String message;     //message for the end of a game
+    private boolean jugando;
+    private Integer vidas;
+    private String mensaje;     //mensaje final del juego
 
     public Tablero() {
 
-        inGame = true;
-        lives = 3;
+        jugando = true;
+        vidas = 3;
 
-        player = new Nave(START_X, START_Y);
-        enemyWave = new Armada();
+        jugador = new Nave(INICIO_X, INICIO_Y);
+        oleadaEnemigos = new Armada();
 
-        guards = new ArrayList<>();
+        bloques = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
-            guards.add(new PosicionBloques(GUARD_POSX + i * 125, GUARD_POSY));
+            bloques.add(new PosicionBloques(BLOQUES_POSX + i * 125, BLOQUES_POSY));
         }
 
         addKeyListener(new KAdapter());     //for Key events
@@ -54,7 +54,7 @@ public class Tablero extends JPanel implements Runnable {
 
         beforeTime = System.currentTimeMillis();
 
-        while (inGame) {
+        while (jugando) {
             repaint();
             animationCycle();       //mechanics of a game
 
@@ -80,43 +80,44 @@ public class Tablero extends JPanel implements Runnable {
         Font font = new Font("Helvetica", Font.PLAIN, 15);
         g.setColor(Color.WHITE);
         g.setFont(font);
-        g.drawString("Vidas: " + lives.toString(), 20, 30);
-        g.drawString("Enemigos restantes: " + enemyWave.getNumeroEnemigo().toString(), 20, 50);
+        g.drawString("Vidas: " + vidas.toString(), 20, 30);
+        g.drawString("Enemigos restantes: " + oleadaEnemigos.getNumeroEnemigo().toString(), 20, 50);
+        g.drawString("Puntaje: " + oleadaEnemigos.getPuntaje() ,20 ,70);
         g.setColor(Color.GREEN);
         g.drawLine(0, POSICION_SUELO, ANCHO_FRAME, POSICION_SUELO);
 
-        player.draw(g, this);
-        if (player.getM().isVisible()) {
-            player.getM().draw(g, this);
+        jugador.dibujar(g, this);
+        if (jugador.getM().isVisible()) {
+            jugador.getM().dibujar(g, this);
         }
 
-        enemyWave.dibujarArmada(g, this);
+        oleadaEnemigos.dibujarArmada(g, this);
 
-        for (PosicionBloques guard : guards) {
+        for (PosicionBloques guard : bloques) {
             guard.dibujarB(g);
         }
     }
 
     private void animationCycle() {
-        if (enemyWave.getNumeroEnemigo() == 0) {
-            inGame = false;
-            message = "Ganaste!! Felicitaciones!!";
+        if (oleadaEnemigos.getNumeroEnemigo() == 0) {
+            jugando = false;
+            mensaje = "Ganaste!! Felicitaciones!!";
         }
-        if (player.isDying()) {
-            lives--;
-            if (lives != 0) {
-                player.revive();
+        if (jugador.isDying()) {
+            vidas--;
+            if (vidas != 0) {
+                jugador.revive();
             } else {
-                inGame = false;
-                message = "Fin del juego!.. Te quedaste sin vidas";
+                jugando = false;
+                mensaje = "Fin del juego!.. Te quedaste sin vidas";
             }
         }
-        if (enemyWave.tocoSuelo()) {
-            inGame = false;
-            message = "Perdiste!..Los aliens tocaron el limite";
+        if (oleadaEnemigos.tocoSuelo()) {
+            jugando = false;
+            mensaje = "Perdiste!..Los aliens tocaron el limite";
         }
-        player.mover();
-        player.missleMove();
+        jugador.mover();
+        jugador.movMisil();
         accionesEnemigos();
         verificaImpactoAlien();
         verificaImpactoNave();
@@ -125,21 +126,21 @@ public class Tablero extends JPanel implements Runnable {
 
     //Metodo que llama a todo lo que deben hacer los enemigos (Disparar,acelerarlos)
     private void accionesEnemigos() {
-        enemyWave.fixStatus();
-        enemyWave.movimientoBomba();
-        enemyWave.disparo();
-        enemyWave.acelerarEnemigos();
-        enemyWave.tocoPared();
+        oleadaEnemigos.verificarVidaEnemigos();
+        oleadaEnemigos.movimientoBomba();
+        oleadaEnemigos.disparo();
+        oleadaEnemigos.acelerarEnemigos();
+        oleadaEnemigos.tocoPared();
     }
 
     //Metodo que elimina a los enemigos si les impacta la bala de la nave
     private void verificaImpactoAlien() {
-        if (player.getM().isVisible()) {
-            for (Enemigo enemy : enemyWave.getEnemigos()) {
-                if (enemy.isVisible() && player.getM().collisionWith(enemy)) {
+        if (jugador.getM().isVisible()) {
+            for (Enemigo enemy : oleadaEnemigos.getEnemigos()) {
+                if (enemy.isVisible() && jugador.getM().colisionar(enemy)) {
                     enemy.explosion();
-                    enemyWave.disminuirNumeroEnemigos();
-                    player.getM().muerto();
+                    oleadaEnemigos.disminuirNumeroEnemigos();
+                    jugador.getM().muerto();
                 }
             }
         }
@@ -147,9 +148,9 @@ public class Tablero extends JPanel implements Runnable {
 
     //Metodo que quita vidas al jugador si la nave ha sido impactada
     private void verificaImpactoNave() {
-        for (Enemigo enemy : enemyWave.getEnemigos()) {
-            if (enemy.getBomb().isVisible() && enemy.getBomb().collisionWith(player)) {
-                player.explosion();
+        for (Enemigo enemy : oleadaEnemigos.getEnemigos()) {
+            if (enemy.getBomb().isVisible() && enemy.getBomb().colisionar(jugador)) {
+                jugador.explosion();
                 enemy.getBomb().muerto();
             }
         }
@@ -157,10 +158,10 @@ public class Tablero extends JPanel implements Runnable {
 
     //Metodo que elimina pedazos del bloque si ha sido impactado
     private void verificaImpactoBloque() {
-        for (PosicionBloques guard : guards) {
-            guard.collisionWith(player.getM());
-            for (Enemigo enemy : enemyWave.getEnemigos()) {
-                guard.collisionWith(enemy.getBomb());
+        for (PosicionBloques guard : bloques) {
+            guard.colisionar(jugador.getM());
+            for (Enemigo enemy : oleadaEnemigos.getEnemigos()) {
+                guard.colisionar(enemy.getBomb());
             }
         }
     }
@@ -173,19 +174,19 @@ public class Tablero extends JPanel implements Runnable {
         FontMetrics ft = this.getFontMetrics(font);
         g.setColor(Color.WHITE);
         g.setFont(font);
-        g.drawString(message, (ANCHO_FRAME - ft.stringWidth(message)) / 2, ALTO_FRAME / 2);
+        g.drawString(mensaje, (ANCHO_FRAME - ft.stringWidth(mensaje)) / 2, ALTO_FRAME / 2);
     }
 
     private class KAdapter extends KeyAdapter {
 
         @Override
         public void keyPressed(KeyEvent e) {
-            player.keyPressed(e);
+            jugador.keyPressed(e);
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-            player.keyReleased(e);
+            jugador.keyReleased(e);
         }
 
     }

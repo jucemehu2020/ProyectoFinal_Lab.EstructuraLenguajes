@@ -25,11 +25,11 @@ public interface Globales {
     public static final int ALIEN_X=0;
     public static final int ALIEN_Y=30;
     //Posicion de inicio de la nave
-    public static final int START_X=300;
-    public static final int START_Y=360;
+    public static final int INICIO_X=300;
+    public static final int INICIO_Y=360;
     //Posicion de suelo
     public static final int POSICION_SUELO=390;
     public static final int TAMAÑO_BLOQUE=10;
-    public static final int GUARD_POSX=90;
-    public static final int GUARD_POSY=300;
+    public static final int BLOQUES_POSX=90;
+    public static final int BLOQUES_POSY=300;
 }
